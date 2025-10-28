@@ -34,11 +34,16 @@ FROM film;
 SELECT COUNT(DISTINCT store_id)
 FROM store;
 
+-- 5.2 Determine the number of employees that the company has.
+SELECT COUNT(DISTINCT staff_id)
+FROM staff;
+
 -- 5.3 Determine how many films are available for rent and how many have been rented.
 SELECT 
-  COUNT(DISTINCT inventory_id) AS available_items,
-  COUNT(rental_id) AS total_rentals
-FROM rental;
+  (SELECT COUNT(*) FROM inventory) AS all_films,
+  (SELECT COUNT(DISTINCT inventory_id) FROM rental) AS total_rentals,
+  (SELECT COUNT(*) FROM inventory) - (SELECT COUNT(DISTINCT inventory_id) FROM rental) AS films_available;
+
 
 -- 5.4 Determine the number of distinct last names of the actors in the database.
 SELECT COUNT(DISTINCT last_name) AS num_lastnames
